@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Database, useDatabase } from './Database'
 import { percent, Promille } from './types'
-
-const Abv = ({ value }: { value: Promille }) => (
-  <span>{value/10}%</span>
-)
+import { Abv } from './Abv'
 
 export const RecordDrink: React.FC = () => {
   const db = useDatabase()
@@ -34,18 +31,18 @@ export const RecordDrink: React.FC = () => {
 
   return (
     <div>
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>Nimi: <input type="text" value={currentName} onChange={(e) => setCurrentName(e.target.value) } /></label>
-        <label>Alkoholiprosentti: <input type="number" value={currentAbv} min={0} max={95} step={0.1} onChange={(e) => setCurrentAbv(Number(e.target.value)) } /></label>
-        <button type="submit">Lisää</button>
-      </form>
-    </div>
-    <ul>
-      { currentDrinks.map(drink => (
-        <li><strong>{drink.name}</strong> <Abv value={drink.abv} /></li>
-      ))}
-    </ul>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <label>Nimi: <input type="text" value={currentName} onChange={(e) => setCurrentName(e.target.value) } /></label>
+          <label>Alkoholiprosentti: <input type="number" value={currentAbv} min={0} max={95} step={0.1} onChange={(e) => setCurrentAbv(Number(e.target.value)) } /></label>
+          <button type="submit">Lisää</button>
+        </form>
+      </div>
+      <ul>
+        { currentDrinks.map(drink => (
+          <li><strong>{drink.name}</strong> <Abv value={drink.abv} /></li>
+        ))}
+      </ul>
     </div>
   )
 }

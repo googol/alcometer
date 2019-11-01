@@ -6,6 +6,7 @@ export interface Database extends idb.DBSchema {
   drinks: {
     key: number
     value: {
+      id?: number
       name: string
       abv: Promille
     }
@@ -16,7 +17,8 @@ export interface Database extends idb.DBSchema {
   log: {
     key: number
     value: {
-      date: Date
+      id?: number
+      timestamp: Date
       drinkName: string
       abv: Promille
       serving: Milliliter
