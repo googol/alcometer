@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import * as idb from 'idb'
 import { Milliliter, Promille } from './types'
 
@@ -6,7 +6,6 @@ export interface Database extends idb.DBSchema {
   drinks: {
     key: number
     value: {
-      id: number
       name: string
       abv: Promille
     }
@@ -17,7 +16,6 @@ export interface Database extends idb.DBSchema {
   log: {
     key: number
     value: {
-      id: number
       date: Date
       drinkName: string
       abv: Promille
@@ -52,3 +50,6 @@ export const DatabaseProvider: React.FC = ({ children }) => {
   )
 }
 
+export function useDatabase() {
+  return useContext(DatabaseContext)
+}

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import { DatabaseProvider } from './Database'
+import { RecordDrink } from './RecordDrink'
 
 const App: React.FC = () => {
   return (
@@ -10,6 +11,7 @@ const App: React.FC = () => {
           <h1>Simple in-browser alcometer</h1>
         </header>
         <main>
+          <RecordDrink />
         </main>
       </div>
     </DatabaseProvider>
