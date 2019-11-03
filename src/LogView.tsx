@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Database, useDatabase } from './Database'
 import { liters, toUnit, Milliliter, Promille } from './types'
 import { Abv } from './Abv'
 import { Liters } from './Liters'
 import { preventingDefault } from './eventHelpers'
-import { Units } from './Units'
+import { Units, toUnits } from './Units'
+import { format, startOfDay } from 'date-fns'
 
 export const LogView: React.FC = () => {
   const db = useDatabase()
@@ -13,6 +14,19 @@ export const LogView: React.FC = () => {
 
   const [currentDrink, setCurrentDrink] = useState<''|number>('')
   const [currentServingSize, setCurrentServingSize] = useState(0.5)
+
+  const currentLogEntriesByDate = useMemo(() => {
+    const result: Map<number, Database['log']['value'][]> = new Map()
+    for (const logEntry of currentLogEntries) {
+      const date = startOfDay(logEntry.timestamp).valueOf()
+      if (result.has(date)) {
+        result.get(date)!.push(logEntry)
+      } else {
+        result.set(date, [logEntry])
+      }
+    }
+    return Array.from(result.entries()).sort((x, y) => x[0] === y[0] ? 0 : x[0] < y[0] ? -1 : 1)
+  }, [currentLogEntries])
 
   const refetchDrinks = () => {
     if (db) {
@@ -57,9 +71,13 @@ export const LogView: React.FC = () => {
         </form>
       </div>
       <ul>
-        { currentLogEntries.map(log => (
+        { currentLogEntriesByDate.map(([date, logs]) => (
+          <div>
+          <h3>{format(date, 'cccc dd.MM.yyyy')}: total ({logs.reduce((sum, log) => sum + toUnits(log.serving, log.abv), 0).toFixed(2)})</h3>
+          {logs.map((log) =>
           <li><strong>{log.drinkName}</strong> (<Liters value={log.serving} />/<Abv value={log.abv} />): <strong><Units serving={log.serving} abv={log.abv} /></strong></li>
-        ))}
+        )}
+        </div>))}
       </ul>
     </div>
   )
