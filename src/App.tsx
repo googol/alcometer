@@ -12,11 +12,11 @@ const App: React.FC = () => {
     <DatabaseProvider>
       <div className="App">
         <header className="App-header">
-          <h1>Simple in-browser alcometer</h1>
+          <h1>Alkoholiannoslaskuri</h1>
         </header>
         <nav>
-          <button onClick={preventingDefault(e=> setMode('main'))}>main</button>
-          <button onClick={preventingDefault(e=> setMode('drinks'))}>drinks</button>
+          <button onClick={preventingDefault(e=> setMode('main'))}>loki</button>
+          <button onClick={preventingDefault(e=> setMode('drinks'))}>juomat</button>
         </nav>
         <main>
           { mode === 'main'
